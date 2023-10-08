@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import useAuth from '@wasp/auth/useAuth';
-import logout from '@wasp/auth/logout';
+import useAuth from "@wasp/auth/useAuth";
+import logout from "@wasp/auth/logout";
 import "./Main.css";
 
 export const Layout = ({ children }) => {
@@ -13,13 +13,18 @@ export const Layout = ({ children }) => {
           <Link to="/">
             <h1 className="text-xl2 font-semibold">Poketrader</h1>
           </Link>
-          { user ? (
-            <span>
-              Hi, {user.username}!{' '}
-              <button onClick={logout} className="text-xl2 underline">
+          {user ? (
+            <div className="grid grid-flow-col gap-2 items-center">
+              <Link to="/profile">
+                <span className="underline">Hi, {user.username}! </span>
+              </Link>
+              <button
+                onClick={logout}
+                className="text-xl2 p-2 border shadow rounded"
+              >
                 (Log out)
               </button>
-            </span>
+            </div>
           ) : (
             <Link to="/login">
               <h1 className="text-xl2 underline">Log in</h1>
@@ -27,7 +32,7 @@ export const Layout = ({ children }) => {
           )}
         </div>
       </header>
-      <main className="container mx-auto px-4 py-2 flex-grow">
+      <main className="container mx-auto px-4 py-2 flex-grow max-w-lg">
         {children}
       </main>
       <footer>

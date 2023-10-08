@@ -15,14 +15,18 @@ export function Profile() {
         const tradeAreaA = JSON.parse(trade.tradeAreaA);
         const tradeAreaB = JSON.parse(trade.tradeAreaB);
         return (
-          <div className="mb-4">
+          <div
+            className={`mb-4 border rounded shadow p-4 ${
+              trade.fairness === "fair" ? "bg-green-300" : "bg-red-300"
+            }`}
+          >
             <div className="mb-2">
               <span className="font-bold">Trade ID: </span>
-              <span>{trade.id}</span>
+              <span className="capitalize">{trade.id}</span>
             </div>
             <div className="mb-2">
               <span className="font-bold">Trade Area A: </span>
-              <span>
+              <span className="capitalize">
                 {tradeAreaA.map((pokemon) => {
                   return pokemon.name + " ";
                 })}
@@ -30,7 +34,7 @@ export function Profile() {
             </div>
             <div className="mb-2">
               <span className="font-bold">Trade Area B: </span>
-              <span>
+              <span className="capitalize">
                 {tradeAreaB.map((pokemon) => {
                   return pokemon.name + " ";
                 })}

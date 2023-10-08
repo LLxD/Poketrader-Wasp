@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@wasp/queries";
 import { useAction } from "@wasp/actions";
 import getPokemon from "@wasp/queries/getPokemon";
@@ -45,10 +45,23 @@ export function Trade() {
     setFairness(result);
   };
 
+  useEffect(() => {
+    if (tradeAreaA.length > 0 && tradeAreaB.length > 0) {
+      handleEvaluateTrade();
+    }
+  }, [tradeAreaA, tradeAreaB]);
+
   return (
     <div className="p-4">
-      <h2 className="text-2xl mb-4">Trade</h2>
-      <div className="flex gap-x-4 mb-4">
+      <h2
+        className={`text-2xl mb-4 font-bold ${
+          fairness === "fair" ? "text-green-500" : "text-red-500"
+        } `}
+      >
+        Trade {fairness && `- is ${fairness}`}
+      </h2>
+
+      <div className="grid gap-x-4 mb-4">
         <div className="grid grid-flow-col gap-2">
           <TradeArea
             pokemons={pokemons}
@@ -68,35 +81,30 @@ export function Trade() {
           />
         </div>
       </div>
-      <button
-        onClick={handleEvaluateTrade}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Evaluate Trade
-      </button>
-      {fairness && <p className="mt-4">Trade is {fairness}</p>}
-      <button
-        onClick={() => {
-          setTradeAreaA([]);
-          setTradeAreaB([]);
-          setFairness(null);
-        }}
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-      >
-        Reset
-      </button>
-      <button
-        onClick={handleRegisterTrade}
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
-      >
-        Register Trade
-      </button>
-      {tradeRegisteredStatus && (
-        <p className="mt-4">Trade successfully registered!</p>
-      )}
-      {!tradeRegisteredStatus && (
-        <p className="mt-4">Trade pending register!</p>
-      )}
+      <div className="grid">
+        <button
+          onClick={() => {
+            setTradeAreaA([]);
+            setTradeAreaB([]);
+            setFairness(null);
+          }}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+        >
+          Reset
+        </button>
+        <button
+          onClick={handleRegisterTrade}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+        >
+          Register Trade
+        </button>
+        {tradeRegisteredStatus && (
+          <p className="mt-4 text-green-500">Trade successfully registered!</p>
+        )}
+        {!tradeRegisteredStatus && (
+          <p className="mt-4 text-gray-500">Trade pending register!</p>
+        )}
+      </div>
     </div>
   );
 }
