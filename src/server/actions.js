@@ -14,7 +14,7 @@ export const evaluateTrade = async (args) => {
   );
 
   const difference = Math.abs(totalA - totalB);
-  const fairThreshold = 10;
+  const fairThreshold = (totalA + totalB) * 0.1;
 
   if (difference < fairThreshold) {
     return "fair";
