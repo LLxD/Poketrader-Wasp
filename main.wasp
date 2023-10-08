@@ -1,0 +1,92 @@
+app Poketrader {
+  wasp: {
+    version: "^0.11.1"
+  },
+  title: "Poketrader",
+  client: {
+    rootComponent: import { Layout } from "@client/Layout.jsx",
+  },
+  db: {
+    prisma: {
+      clientPreviewFeatures: ["extendedWhereUnique"]
+    }
+  },
+  auth: {
+    userEntity: User,
+    methods: {
+      usernameAndPassword: {}
+    },
+    onAuthFailedRedirectTo: "/login",
+    onAuthSucceededRedirectTo: "/"
+  },
+}
+
+route LoginRoute { path: "/login", to: LoginPage }
+page LoginPage {
+  component: import Login from "@client/pages/auth/Login.jsx"
+}
+route SignupRoute { path: "/signup", to: SignupPage }
+page SignupPage {
+  component: import Signup from "@client/pages/auth/Signup.jsx"
+}
+
+entity User {=psl
+        id Int @id @default(autoincrement())
+        username String @unique
+        password String
+        trades Trade[]
+psl=}
+
+entity Pokemon {=psl
+        id Int @id @default(autoincrement())
+        name String
+        experiencePoints Int
+psl=}
+
+entity Trade {=psl
+        id Int @id @default(autoincrement())
+        pokemonA Pokemon @relation(fields: [pokemonIdA], references: [id])
+        pokemonIdA Int
+        pokemonB Pokemon @relation(fields: [pokemonIdB], references: [id])
+        pokemonIdB Int
+        user User @relation(fields: [userId], references: [id])
+        userId Int
+psl=}
+
+action evaluateTrade {
+  fn: import { evaluateTrade } from "@server/actions.js",
+  entities: [Pokemon]
+}
+
+action registerTrade {
+  fn: import { registerTrade } from "@server/actions.js",
+  entities: [Trade, User]
+}
+
+query getUserTrades {
+  fn: import { getUserTrades } from "@server/queries.js",
+  entities: [Trade, User]
+}
+
+query getPokemon {
+  fn: import { getPokemon } from "@server/queries.js",
+  entities: [Pokemon]
+}
+
+route TradeRoute { path: "/trade", to: TradePage }
+page TradePage {
+  component: import { Trade } from "@client/pages/Trade.jsx",
+  authRequired: true
+}
+
+route ProfileRoute { path: "/profile", to: ProfilePage }
+page ProfilePage {
+  component: import { Profile } from "@client/pages/Profile.jsx",
+  authRequired: true
+}
+
+route HomePageRoute { path: "/", to: HomePage }
+page HomePage {
+  component: import { HomePage } from "@client/pages/Home.jsx",
+  authRequired: false
+}
