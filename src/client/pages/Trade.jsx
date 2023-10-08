@@ -3,6 +3,7 @@ import { useQuery } from "@wasp/queries";
 import { useAction } from "@wasp/actions";
 import getPokemon from "@wasp/queries/getPokemon";
 import evaluateTrade from "@wasp/actions/evaluateTrade";
+import registerTrade from "@wasp/actions/registerTrade";
 import TradeArea from "../components/TradeArea";
 
 export function Trade() {
@@ -18,12 +19,23 @@ export function Trade() {
   });
   const [tradeAreaA, setTradeAreaA] = useState([]);
   const [tradeAreaB, setTradeAreaB] = useState([]);
+  const [tradeRegisteredStatus, setTradeRegisteredStatus] = useState(false);
 
   const evaluateTradeFn = useAction(evaluateTrade);
   const [fairness, setFairness] = useState(null);
 
   if (isLoadingPokemons) return "Loading...";
   if (errorLoadingPokemons) return "Error: " + errorLoadingPokemons;
+
+  const handleRegisterTrade = async () => {
+    await registerTrade({
+      tradeAreaA: tradeAreaA,
+      tradeAreaB: tradeAreaB,
+      fairness: fairness,
+    });
+
+    setTradeRegisteredStatus(true);
+  };
 
   const handleEvaluateTrade = async () => {
     const result = await evaluateTradeFn({
@@ -63,6 +75,28 @@ export function Trade() {
         Evaluate Trade
       </button>
       {fairness && <p className="mt-4">Trade is {fairness}</p>}
+      <button
+        onClick={() => {
+          setTradeAreaA([]);
+          setTradeAreaB([]);
+          setFairness(null);
+        }}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+      >
+        Reset
+      </button>
+      <button
+        onClick={handleRegisterTrade}
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+      >
+        Register Trade
+      </button>
+      {tradeRegisteredStatus && (
+        <p className="mt-4">Trade successfully registered!</p>
+      )}
+      {!tradeRegisteredStatus && (
+        <p className="mt-4">Trade pending register!</p>
+      )}
     </div>
   );
 }

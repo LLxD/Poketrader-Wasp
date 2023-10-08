@@ -26,6 +26,7 @@ export const evaluateTrade = async (args) => {
 export const registerTrade = async (args, context) => {
   const pokemonAList = args.tradeAreaA;
   const pokemonBList = args.tradeAreaB;
+  const { user, entities } = context;
 
   const stringifiedPokemonAList = JSON.stringify(pokemonAList);
   const stringifiedPokemonBList = JSON.stringify(pokemonBList);
@@ -38,6 +39,7 @@ export const registerTrade = async (args, context) => {
     data: {
       tradeAreaA: stringifiedPokemonAList,
       tradeAreaB: stringifiedPokemonBList,
+      fairness: args.fairness,
       user: { connect: { id: user.id } },
     },
   });

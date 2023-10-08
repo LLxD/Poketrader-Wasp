@@ -43,6 +43,7 @@ entity Trade {=psl
     user      User     @relation(fields: [userId], references: [id])
     tradeAreaA String
     tradeAreaB String
+    fairness   String @default("unfair")
 psl=}
 
 action evaluateTrade {
