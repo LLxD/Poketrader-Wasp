@@ -1,37 +1,43 @@
-import HttpError from '@wasp/core/HttpError.js'
+import HttpError from "@wasp/core/HttpError.js";
 
-export const evaluateTrade = async (args, context) => {
-  const pokemonA = await context.entities.Pokemon.findUnique({
-    where: { id: args.pokemonIdA }
-  });
+export const evaluateTrade = async (args) => {
+  const pokemonAList = args.pokemonA;
+  const pokemonBList = args.pokemonB;
 
-  const pokemonB = await context.entities.Pokemon.findUnique({
-    where: { id: args.pokemonIdB }
-  });
+  const totalA = pokemonAList.reduce(
+    (acc, pokemon) => acc + pokemon.base_experience,
+    0
+  );
+  const totalB = pokemonBList.reduce(
+    (acc, pokemon) => acc + pokemon.base_experience,
+    0
+  );
 
-  const difference = Math.abs(pokemonA.experiencePoints - pokemonB.experiencePoints);
-  const fairThreshold = Math.max(pokemonA.experiencePoints, pokemonB.experiencePoints) * 0.1;
+  const difference = Math.abs(totalA - totalB);
+  const fairThreshold = 10;
 
   if (difference < fairThreshold) {
-    return 'fair';
+    return "fair";
   } else {
-    return 'unfair';
+    return "unfair";
   }
-}
+};
 
 export const registerTrade = async (args, context) => {
   const { pokemonIdA, pokemonIdB } = args;
   const { user, entities } = context;
 
-  if (!user) { throw new HttpError(401) }
+  if (!user) {
+    throw new HttpError(401);
+  }
 
   const trade = await entities.Trade.create({
     data: {
       pokemonA: { connect: { id: pokemonIdA } },
       pokemonB: { connect: { id: pokemonIdB } },
-      user: { connect: { id: user.id } }
-    }
+      user: { connect: { id: user.id } },
+    },
   });
 
   return trade;
-}
+};

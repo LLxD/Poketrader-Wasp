@@ -18,7 +18,20 @@ export const getUserTrades = async (args, context) => {
 async function loadPokemons() {
   const P = new Pokedex();
   const response = await P.getGenerationByName("generation-i");
-  return response.pokemon_species;
+  const pokemons = response.pokemon_species;
+  const pokemonsWithImages = await Promise.all(
+    pokemons.map(async (pokemon) => {
+      const pokemonData = await P.getPokemonByName(pokemon.name);
+      return {
+        id: pokemonData.id,
+        name: pokemonData.name,
+        base_experience: pokemonData.base_experience,
+        image: pokemonData.sprites.front_default,
+      };
+    })
+  );
+
+  return pokemonsWithImages;
 }
 
 export const getPokemon = async () => {
