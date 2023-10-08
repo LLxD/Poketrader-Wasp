@@ -9,7 +9,7 @@ export const Layout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-primary-800 text-white p-4">
-        <div className="container mx-auto px-4 py-2 flex justify-between">
+        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <Link to="/">
             <h1 className="text-xl2 font-semibold">Poketrader</h1>
           </Link>
