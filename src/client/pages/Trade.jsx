@@ -45,11 +45,14 @@ export function Trade() {
           ))}
           <select
             onChange={(e) => {
-              setSelectedPokemon({ ...selectedPokemon, areaA: e.target.value });
+              const targetPokemon = pokemons.find(
+                (pokemon) => pokemon.name === e.target.value
+              );
+              setSelectedPokemon({ ...selectedPokemon, areaA: targetPokemon });
             }}
           >
             {pokemons.map((pokemon) => (
-              <option key={pokemon.name} value={pokemon}>
+              <option key={pokemon.name} value={pokemon.name}>
                 {pokemon.name}
               </option>
             ))}
@@ -58,7 +61,9 @@ export function Trade() {
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
-            setTradeAreaA([...tradeAreaA, selectedPokemon.areaA]);
+            if (tradeAreaA.length <= 6) {
+              setTradeAreaA([...tradeAreaA, selectedPokemon.areaA]);
+            }
           }}
         >
           Add to Trade Area A
