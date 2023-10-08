@@ -41,16 +41,21 @@ entity Pokemon {=psl
         id Int @id @default(autoincrement())
         name String
         experiencePoints Int
+        TradeAreaA       Trade[] @relation("tradeAreaA")
+        TradeAreaB       Trade[] @relation("tradeAreaB")
+        Trade            Trade[]
 psl=}
 
 entity Trade {=psl
-        id Int @id @default(autoincrement())
-        pokemonA Pokemon @relation(fields: [pokemonIdA], references: [id])
-        pokemonIdA Int
-        pokemonB Pokemon @relation(fields: [pokemonIdB], references: [id])
-        pokemonIdB Int
-        user User @relation(fields: [userId], references: [id])
-        userId Int
+    id         Int      @id @default(autoincrement())
+    pokemonA   Pokemon  @relation("tradeAreaA", fields: [pokemonIdA], references: [id])
+    pokemonIdA Int
+    pokemonB   Pokemon  @relation("tradeAreaB", fields: [pokemonIdB], references: [id])
+    pokemonIdB Int
+    user       User     @relation(fields: [userId], references: [id])
+    userId     Int
+    Pokemon    Pokemon? @relation(fields: [pokemonId], references: [id])
+    pokemonId  Int?
 psl=}
 
 action evaluateTrade {
