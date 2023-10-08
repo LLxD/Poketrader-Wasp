@@ -8,9 +8,11 @@ function TradeArea({
   setTradeArea,
   tradeArea,
 }) {
+  const displayName =
+    tradeAreaName === "areaA" ? "Trade Area A" : "Trade Area B";
   return (
     <div>
-      <h3 className="text-xl">{tradeAreaName}</h3>
+      <h3 className="text-xl">{displayName}</h3>
       {tradeArea.map((pokemon) => (
         <div className="grid grid-flow-col items-center">
           <p>
@@ -26,7 +28,10 @@ function TradeArea({
             const targetPokemon = pokemons.find(
               (pokemon) => pokemon.name === e.target.value
             );
-            setSelectedPokemon({ ...selectedPokemon, areaA: targetPokemon });
+            setSelectedPokemon({
+              ...selectedPokemon,
+              [tradeAreaName]: targetPokemon,
+            });
           }}
         >
           <option disabled selected value>
@@ -41,14 +46,14 @@ function TradeArea({
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
-            if (!selectedPokemon.areaA) return;
+            if (!selectedPokemon[tradeAreaName]) return;
 
             if (tradeArea.length < 6) {
-              setTradeArea([...tradeArea, selectedPokemon.areaA]);
+              setTradeArea([...tradeArea, selectedPokemon[tradeAreaName]]);
             }
           }}
         >
-          Add to {tradeAreaName}
+          Add to {displayName}
         </button>
       </div>
     </div>

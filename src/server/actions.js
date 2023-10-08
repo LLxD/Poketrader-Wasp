@@ -1,8 +1,8 @@
 import HttpError from "@wasp/core/HttpError.js";
 
 export const evaluateTrade = async (args) => {
-  const pokemonAList = args.pokemonA;
-  const pokemonBList = args.pokemonB;
+  const pokemonAList = args.tradeAreaA;
+  const pokemonBList = args.tradeAreaB;
 
   const totalA = pokemonAList.reduce(
     (acc, pokemon) => acc + pokemon.base_experience,
@@ -24,8 +24,11 @@ export const evaluateTrade = async (args) => {
 };
 
 export const registerTrade = async (args, context) => {
-  const { pokemonIdA, pokemonIdB } = args;
-  const { user, entities } = context;
+  const pokemonAList = args.tradeAreaA;
+  const pokemonBList = args.tradeAreaB;
+
+  const stringifiedPokemonAList = JSON.stringify(pokemonAList);
+  const stringifiedPokemonBList = JSON.stringify(pokemonBList);
 
   if (!user) {
     throw new HttpError(401);
@@ -33,8 +36,8 @@ export const registerTrade = async (args, context) => {
 
   const trade = await entities.Trade.create({
     data: {
-      pokemonA: { connect: { id: pokemonIdA } },
-      pokemonB: { connect: { id: pokemonIdB } },
+      tradeAreaA: stringifiedPokemonAList,
+      tradeAreaB: stringifiedPokemonBList,
       user: { connect: { id: user.id } },
     },
   });

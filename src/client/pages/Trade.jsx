@@ -25,13 +25,13 @@ export function Trade() {
   if (isLoadingPokemons) return "Loading...";
   if (errorLoadingPokemons) return "Error: " + errorLoadingPokemons;
 
-  // const handleEvaluateTrade = async () => {
-  //   const result = await evaluateTradeFn({
-  //     pokemonIdA: pokemons.id,
-  //     pokemonIdB: pokemonB.id,
-  //   });
-  //   setFairness(result);
-  // };
+  const handleEvaluateTrade = async () => {
+    const result = await evaluateTradeFn({
+      tradeAreaA: tradeAreaA,
+      tradeAreaB: tradeAreaB,
+    });
+    setFairness(result);
+  };
 
   return (
     <div className="p-4">
@@ -40,7 +40,7 @@ export function Trade() {
         <div className="grid grid-flow-col gap-2">
           <TradeArea
             pokemons={pokemons}
-            tradeAreaName="Trade Area A"
+            tradeAreaName="areaA"
             setSelectedPokemon={setSelectedPokemon}
             selectedPokemon={selectedPokemon}
             setTradeArea={setTradeAreaA}
@@ -48,7 +48,7 @@ export function Trade() {
           />
           <TradeArea
             pokemons={pokemons}
-            tradeAreaName="Trade Area B"
+            tradeAreaName="areaB"
             setSelectedPokemon={setSelectedPokemon}
             selectedPokemon={selectedPokemon}
             setTradeArea={setTradeAreaB}
@@ -56,12 +56,12 @@ export function Trade() {
           />
         </div>
       </div>
-      {/* <button
+      <button
         onClick={handleEvaluateTrade}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Evaluate Trade
-      </button> */}
+      </button>
       {fairness && <p className="mt-4">Trade is {fairness}</p>}
     </div>
   );
