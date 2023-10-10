@@ -8,8 +8,9 @@ app Poketrader {
   },
   db: {
     prisma: {
-      clientPreviewFeatures: ["extendedWhereUnique"]
-    }
+      clientPreviewFeatures: ["extendedWhereUnique"],
+    },
+      system: PostgreSQL,
   },
   auth: {
     userEntity: User,
