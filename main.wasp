@@ -6,6 +6,9 @@ app Poketrader {
   client: {
     rootComponent: import { Layout } from "@client/Layout.jsx",
   },
+  dependencies: [
+    ("pokedex-promise-v2","^4.1.1")
+  ],
   db: {
     prisma: {
       clientPreviewFeatures: ["extendedWhereUnique"],
