@@ -1,25 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@wasp/queries";
-import getUserTrades from "@wasp/queries/getUserTrades";
-import getPokemon from "@wasp/queries/getPokemon";
 
 export function HomePage() {
-  const {
-    data: trades,
-    isLoading: tradesLoading,
-    error: tradesError,
-  } = useQuery(getUserTrades);
-  const {
-    data: pokemons,
-    isLoading: pokemonsLoading,
-    error: pokemonsError,
-  } = useQuery(getPokemon);
-
-  if (tradesLoading || pokemonsLoading) return "Loading...";
-  if (tradesError || pokemonsError)
-    return "Error: " + (tradesError || pokemonsError);
-
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold mb-4">Welcome to Poketrader!</h1>
