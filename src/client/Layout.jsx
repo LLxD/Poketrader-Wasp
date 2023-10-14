@@ -33,7 +33,20 @@ export const Layout = ({ children }) => {
         </div>
       </header>
       <main className="container mx-auto px-4 py-2 flex-grow max-w-lg">
-        {children}
+        {user ? (
+          children
+        ) : (
+          <h1 className="text-center my-16">
+            Please,{" "}
+            <Link className="underline" to="/signup">
+              Sign Up
+            </Link>{" "}
+            or{" "}
+            <Link className="underline" to="/login">
+              Login
+            </Link>{" "}
+          </h1>
+        )}
       </main>
       <footer>
         <div className="container mx-auto p-4">
